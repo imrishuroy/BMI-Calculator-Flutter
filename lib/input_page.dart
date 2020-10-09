@@ -30,27 +30,35 @@ class _InputPageState extends State<InputPage> {
   }
     */
 
-  Color maleCardColor = inactiveCardColor;
-  Color femaleCardColor = inactiveCardColor;
+  // Color maleCardColor = inactiveCardColor;
+  // Color femaleCardColor = inactiveCardColor;
 
-  void updateColor(Gender gender) {
-    // 1 = male and 2 = female
-    //male card presses
-    if (gender == Gender.male) {
-      if (maleCardColor == inactiveCardColor) {
-        maleCardColor = activeCardColor;
-        femaleCardColor = inactiveCardColor;
-      } else {
-        maleCardColor = inactiveCardColor;
-      }
-    } else {
-      if (femaleCardColor == inactiveCardColor) {
-        femaleCardColor = activeCardColor;
-        maleCardColor = inactiveCardColor;
-      } else {
-        femaleCardColor = inactiveCardColor;
-      }
-    }
+  // void updateColor(Gender gender) {
+  //   // 1 = male and 2 = female
+  //   //male card presses
+  //   if (gender == Gender.male) {
+  //     if (maleCardColor == inactiveCardColor) {
+  //       maleCardColor = activeCardColor;
+  //       femaleCardColor = inactiveCardColor;
+  //     } else {
+  //       maleCardColor = inactiveCardColor;
+  //     }
+  //   } else {
+  //     if (femaleCardColor == inactiveCardColor) {
+  //       femaleCardColor = activeCardColor;
+  //       maleCardColor = inactiveCardColor;
+  //     } else {
+  //       femaleCardColor = inactiveCardColor;
+  //     }
+  //   }
+  // }
+
+  Gender selectedGender;
+
+  void gestureDector(Gender gender) {
+    setState(() {
+      selectedGender = gender;
+    });
   }
 
   Widget _buildGender(IconData icon, String gender) {
@@ -81,30 +89,25 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      // print('Pressed');
-                      setState(() {
-                        updateColor(Gender.male);
-                      });
+                  child: ReuseableCard(
+                    onPress: () {
+                      gestureDector(Gender.male);
                     },
-                    child: ReuseableCard(
-                      cardChild: _buildGender(FontAwesomeIcons.mars, 'MALE'),
-                      colour: maleCardColor,
-                    ),
+                    cardChild: _buildGender(FontAwesomeIcons.mars, 'MALE'),
+                    colour: selectedGender == Gender.male
+                        ? activeCardColor
+                        : inactiveCardColor,
                   ),
                 ),
                 Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        updateColor(Gender.female);
-                      });
+                  child: ReuseableCard(
+                    onPress: () {
+                      gestureDector(Gender.female);
                     },
-                    child: ReuseableCard(
-                      cardChild: _buildGender(FontAwesomeIcons.venus, 'FEMALE'),
-                      colour: femaleCardColor,
-                    ),
+                    cardChild: _buildGender(FontAwesomeIcons.venus, 'FEMALE'),
+                    colour: selectedGender == Gender.female
+                        ? activeCardColor
+                        : inactiveCardColor,
                   ),
                 ),
               ],
